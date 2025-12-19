@@ -1,50 +1,84 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import GeneralInfo from "./Components/GeneralInfo.jsx";
+import EducationInfo from "./Components/Education.jsx";
+import PracticalInfo from "./Components/PracticalInfo.jsx";
+import "./App.css";
 
 function App() {
-  const [generalInfo,setGeneralInfo]=useState({
-    name:'',
-    email:'',
-    phone:''
+  const [generalInfo, setGeneralInfo] = useState({
+    name: "",
+    email: "",
+    phone: "",
   });
-  const [isSubmitted,setIsSubmitted]=useState(false);
-  function handleInputChange(e){
-    let nam=e.target.name;
-    let val=e.target.value;
-    setGeneralInfo({...generalInfo,[nam]:val});
+  const [eduInfo, setEduInfo] = useState({
+    school: "",
+    study: "",
+    date: "",
+  });
+  const [practicalInfo, setPracticalInfo] = useState({
+    company: "",
+    position: "",
+    responsibility: "",
+    dateFrom: "",
+    dateTo: "",
+  });
+  const [isPracticalSubmitted, setIsPracticalSubmitted] = useState(false);
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEduSubmitted, setIsEduSubmitted] = useState(false);
+  function handleEduChange(e) {
+    let nam = e.target.name;
+    let val = e.target.value;
+    setEduInfo({ ...eduInfo, [nam]: val });
   }
-  function handleSubmit(e){
-    e.preventDefault();
-    setIsSubmitted(true);
+  function handleInputChange(e) {
+    let nam = e.target.name;
+    let val = e.target.value;
+    setGeneralInfo({ ...generalInfo, [nam]: val });
   }
-  function handleEdit(){
-    setIsSubmitted(false);
+  function handlePracticalChange(e){
+    let nam = e.target.name;
+    let val = e.target.value;
+    setPracticalInfo({ ...practicalInfo, [nam]: val });
   }
-
   return (
     <>
-      {!isSubmitted?(
-        <form onSubmit={handleSubmit}>
-          <label>Name:</label>
-          <input type="text" name="name" value={generalInfo.name} onChange={handleInputChange}/>
-          <label>Email:</label>
-          <input type="email" name="email" value={generalInfo.email} onChange={handleInputChange} />
-          <label>Phone:</label>
-          <input type="numeric" name="phone" value={generalInfo.phone} onChange={handleInputChange} />
-          <button type="submit">Submit Info</button>
-        </form>
-      ):(
-        <div>
-          <h2>Name: {generalInfo.name} </h2>
-          <h2>Email: {generalInfo.email}</h2>
-          <h2>Phone: {generalInfo.phone}</h2>
-          <button onClick={handleEdit}>Edit</button>
-        </div>
-        
-      )}
+      <h1>CV Builder</h1>
+      <hr />
+      <GeneralInfo
+        data={generalInfo}
+        isSubmitted={isSubmitted}
+        onInputChange={handleInputChange}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsSubmitted(true);
+        }}
+        onEdit={(e) => setIsSubmitted(false)}
+      />
+      <hr />
+      <EducationInfo
+        data={eduInfo}
+        isSubmitted={isEduSubmitted}
+        onInputChange={handleEduChange}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsEduSubmitted(true);
+        }}
+        onEdit={(e) => setIsEduSubmitted(false)}
+      />
+      <hr/>
+      <PracticalInfo
+        data={practicalInfo}
+        isSubmitted={isPracticalSubmitted}
+        onInputChange={handlePracticalChange}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsPracticalSubmitted(true);
+        }}
+        onEdit={(e) => setIsPracticalSubmitted(false)}
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
